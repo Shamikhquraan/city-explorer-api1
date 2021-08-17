@@ -30,16 +30,10 @@ server.get('/getShoppingData',(req,res)=>{
 
  //localhost:3700/getDataFromWeth?cityName=
 server.get('/getDataFromWeth',(req,res)=>{
-    
     console.log(req.query);
       let qurName = req.query.cityName;
-      console.log(city.city_name.toLowerCase());
       let cityInfo = pokeData.find(item=>{
-              console.log(city.city_name.toLowerCase());
-
         if(item.city_name.toLowerCase() === qurName.toLowerCase()) {
-            console.log(city.city_name.toLowerCase());
-
             return item;
         }
     })
