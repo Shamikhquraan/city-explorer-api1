@@ -34,7 +34,10 @@ server.get('/getDataFromWeth',(req,res)=>{
       let qurName = req.query.cityName;
       let cityInfo = pokeData.find(item=>{
         if(item.city_name.toLowerCase() === qurName.toLowerCase()) {
+            console.log(item);
+
             return item;
+        
         }
     })
     res.send(cityInfo);
@@ -44,8 +47,11 @@ server.get('/getDataFromWeth',(req,res)=>{
 
 
   server.get('*',(req,res)=>{
-    res.status(404).send('not found')
+
+    res.status(500).send('some thing went wrong .')
 })
+
+
 
 
 
