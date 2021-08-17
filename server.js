@@ -1,8 +1,8 @@
-const { json } = require('express');
-const express = require('express');
-const server = express();
 require("dotenv").config();
 
+const  express  = require('express');
+require("dotenv").config();
+const server = express();
 
 const pokeData = require('./assets/weather.json');
 const PORT = process.env.PORT;
