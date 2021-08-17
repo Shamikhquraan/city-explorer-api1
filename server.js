@@ -2,7 +2,9 @@ require("dotenv").config();
 
 const  express  = require('express');
 require("dotenv").config();
+const cors = require("cors");
 const server = express();
+server.use(cors());
 
 const pokeData = require('./assets/weather.json');
 const PORT = process.env.PORT;
@@ -26,8 +28,7 @@ server.get('/getShoppingData',(req,res)=>{
 })
 
 
-
- //localhost:3700/getShoppingData?cityName=
+ //localhost:3700/getDataFromWeth?cityName=
 server.get('/getDataFromWeth',(req,res)=>{
     
     console.log(req.query);
