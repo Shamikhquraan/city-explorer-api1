@@ -5,45 +5,54 @@ require("dotenv").config();
 const cors = require("cors");
 const server = express();
 server.use(cors());
+const axios = require("axios");
+const { request } = require('express');
 
-const pokeData = require('./assets/weather.json');
+//const pokeData = require('./assets/weather.json');
 const PORT = process.env.PORT;
 
 
+server.get('/Weather',getWeatherHandler);
 
 //localhost:3001/
-server.get('/',(req,res)=>{
-    res.send('home route')
-})
-
-//localhost:3700/test
-server.get('/test',(request,response)=>{
-    response.send('your server is working')
-})
-
-// localhost:3700/getShoppingData
-server.get('/getShoppingData',(req,res)=>{
-    let shoppingArray = ['shoes','bag','toys'];
-    res.status(200).send(shoppingArray);
-})
+server.get('/',homeHandler);
 
 
- //localhost:3700/getDataFromWeth?cityName=
-server.get('/Weather',(req,res)=>{
+function homeHandler(req, res) {
+    res.send("HOME");
+  }
+
+  async function getWeatherHandler(req,response){
     console.log(req.query);
-      let sqQuery = req.query.searchQuery;
-      let cityInfo = pokeData.find(item=>{
-        if(item.city_name.toLowerCase() === sqQuery.toLowerCase()) {
-            console.log(item);
+      let searchQuery = req.query.searchQuery;
+      let URL =`https://api.weatherbit.io/v2.0/forecast/daily?city=${searchQuery}&key=${process.env.WHEATHER_SERVER_KEY}`
+      try {
+        axios.get(URL).then((weatherResult)=> {
+        let weatherArray = weatherResult.data.data.map((item)=>{
 
-            return item;
+            return new weatherClass(item);
         
-        }
-    })
-    res.send(cityInfo);
-      
-  })
+        });
+        // console.log('weatherArray',weatherArray);
 
+        response.send(weatherArray)
+    });
+    } catch(error) {
+        console.log('error from axios',error)
+        response.send(error)
+    
+    }
+    };
+  
+
+
+    class weatherClass  {
+        constructor(countryData){
+            this.description = countryData.weather.description;
+            this.date = countryData.valid_date;
+        //    this.temp=countryData.temp;
+        }
+    };
 
 
   server.get('*',(req,res)=>{
