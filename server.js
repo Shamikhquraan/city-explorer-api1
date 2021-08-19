@@ -29,11 +29,11 @@ server.get('/getShoppingData',(req,res)=>{
 
 
  //localhost:3700/getDataFromWeth?cityName=
-server.get('/getDataFromWeth',(req,res)=>{
+server.get('/Weather',(req,res)=>{
     console.log(req.query);
-      let qurName = req.query.cityName;
+      let sqQuery = req.query.searchQuery;
       let cityInfo = pokeData.find(item=>{
-        if(item.city_name.toLowerCase() === qurName.toLowerCase()) {
+        if(item.city_name.toLowerCase() === sqQuery.toLowerCase()) {
             console.log(item);
 
             return item;
@@ -50,9 +50,6 @@ server.get('/getDataFromWeth',(req,res)=>{
 
     res.status(500).send('some thing went wrong .')
 })
-
-
-
 
 
 server.listen(PORT,()=>{
