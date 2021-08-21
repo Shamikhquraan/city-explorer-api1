@@ -1,7 +1,8 @@
-const axios = require('axios');
+const axios = require('axios')
 module.exports = getMovieHandler; 
 
 
+let inMemory = {}
 
 
 // localhost:3700/movies?cityName=amman
@@ -9,12 +10,15 @@ function getMovieHandler (req, res) {
 
     console.log(req.query.cityName);
   
-  
     let cityName =req.query.cityName;
+    let movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}&include_adult=false`
+
+  if (inMemory[cityName] !== undefined) {
+    console.log(" cache hit / MOVIES ");
+    res.send(inMemory[searchQuery]);
+  } else {
+    console.log(" cache miss / MOVIES ");
     
-  
-    
-        let movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}&include_adult=false`
     try {
         axios.get(movieUrl).then((movieData) => {
             console.log(movieData);
@@ -30,6 +34,11 @@ function getMovieHandler (req, res) {
             console.log(error);
             res.status(500).send('not found');
         }
+   
+   
+ }
+
+
     }
   
   

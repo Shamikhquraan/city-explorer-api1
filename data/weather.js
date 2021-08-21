@@ -2,12 +2,19 @@ const axios = require('axios');
 module.exports = getWeatherHandler; 
 
 
+let inMemory = {}
 
 
 async function getWeatherHandler(req, response) {
     console.log(req.query);
     let searchQuery = req.query.searchQuery;
     let URL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${searchQuery}&key=${process.env.WHEATHER_SERVER_KEY}`;
+      
+  if (inMemory[searchQuery] !== undefined) {
+    console.log(" cache hit / MOVIES ");
+    res.send(inMemory[searchQuery]);
+  } else {
+    console.log(" cache miss / MOVIES ");
     try {
       axios.get(URL).then((weatherResult) => {
         let weatherArray = weatherResult.data.data.map((item) => {
@@ -21,7 +28,7 @@ async function getWeatherHandler(req, response) {
       console.log("error from axios", error);
       response.send(error);
     }
-  }
+  }}
   
   class weatherClass {
     constructor(countryData) {
@@ -29,5 +36,5 @@ async function getWeatherHandler(req, response) {
       this.date = countryData.valid_date;
       //    this.temp=countryData.temp;
     }
-  };
+  }
   
