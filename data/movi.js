@@ -8,27 +8,28 @@ let inMemory = {}
 // localhost:3700/movies?cityName=amman
 function getMovieHandler (req, res) {
 
-    console.log(req.query.cityName);
+    //console.log(req.query.cityName);
   
     let cityName =req.query.cityName;
     let movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}&include_adult=false`
 
   if (inMemory[cityName] !== undefined) {
     console.log(" cache hit / MOVIES ");
-    res.send(inMemory[searchQuery]);
+    res.send(inMemory[cityName]);
   } else {
     console.log(" cache miss / MOVIES ");
     
     try {
         axios.get(movieUrl).then((movieData) => {
-            console.log(movieData);
+       //     console.log(movieData);
   
             let weaArr = movieData.data.results.map((elem) => {
                 return new Movies(elem);
             })
-  
+            inMemory[cityName]=weaArr;
+
             res.status(200).send(weaArr) 
-        })
+        });
   
         } catch (error) {
             console.log(error);
